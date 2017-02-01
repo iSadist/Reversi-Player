@@ -1,12 +1,15 @@
+import java.awt.Point;
 import java.util.ArrayList;
 
 public class Node {
 	
-	private int value;
+	private int myValue;
+	private int opponentsScore;
+	private Point position;
 	private ArrayList<Node> branches;
 	
 	public Node(int value) {
-		this.value = value;
+		position = new Point();
 		branches = new ArrayList<Node>();
 	}
 	
