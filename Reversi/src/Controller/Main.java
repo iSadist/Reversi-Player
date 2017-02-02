@@ -9,7 +9,9 @@ import GUI.GUIBoard;
 public class Main {
 	
 	public static void main(String[] args) {
+		Reversi reversi = new Reversi();
 		Board board = new Board();
 		GUIBoard game = new GUIBoard(board);
+		
 	}
 }

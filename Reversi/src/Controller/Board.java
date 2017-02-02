@@ -1,15 +1,18 @@
 package Controller;
+
+import java.awt.Color;
+
 public class Board {
 	
 	public static final int boardSize = 8;
-	private ReversiPiece[][] squares;
+	private Color[][] squares;
 	
 	public Board() {
-		squares = new ReversiPiece[boardSize][boardSize];
+		squares = new Color[boardSize][boardSize];
 		setup();
 	}
 	
-	public boolean putPieceOnSquare(int x, int y, ReversiPiece piece) {
+	public boolean putPieceOnSquare(int x, int y, Color piece) {
 		if(squareIsOnBoard(x, y)) {
 			System.out.println("You are trying to put a piece outside of the board");
 			return false;
@@ -25,22 +28,22 @@ public class Board {
 	public boolean turnPieceOnSquare(int x, int y) {
 		if(squares[x][y] == null) {
 			return false;
-		} else if(squares[x][y] == ReversiPiece.BLACK) {
-			setPiece(x, y, ReversiPiece.WHITE);
-		} else if(squares[x][y] == ReversiPiece.WHITE) {
-			setPiece(x, y, ReversiPiece.BLACK);
+		} else if(squares[x][y] == Color.BLACK) {
+			setPiece(x, y, Color.WHITE);
+		} else if(squares[x][y] == Color.WHITE) {
+			setPiece(x, y, Color.BLACK);
 		}
 		return true;
 	}
 	
-	public void setPiece(int x, int y, ReversiPiece piece) {
+	public void setPiece(int x, int y, Color piece) {
 		if(squareIsOnBoard(x, y)) {
 			return;
 		}
 		squares[x][y] = piece;
 	}
 	
-	public ReversiPiece getPiece(int x, int y) {
+	public Color getPiece(int x, int y) {
 		if(squareIsOnBoard(x, y)) {
 			return squares[x][y];			
 		}
@@ -52,10 +55,10 @@ public class Board {
 	}
 	
 	private void setup() {
-		putPieceOnSquare(4, 4, ReversiPiece.BLACK);
-		putPieceOnSquare(4, 5, ReversiPiece.WHITE);
-		putPieceOnSquare(5, 4, ReversiPiece.WHITE);
-		putPieceOnSquare(5, 5, ReversiPiece.BLACK);
+		putPieceOnSquare(4, 4, Color.BLACK);
+		putPieceOnSquare(4, 5, Color.WHITE);
+		putPieceOnSquare(5, 4, Color.WHITE);
+		putPieceOnSquare(5, 5, Color.BLACK);
 	}
 
 }
