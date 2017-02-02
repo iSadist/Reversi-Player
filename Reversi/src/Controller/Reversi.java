@@ -45,4 +45,25 @@ public class Reversi {
 		myTurn = !myTurn;
 	}
 	
+	public void checkFlip(Point lastMove){
+		for(int i=-1;i<2;i++){
+			for(int j=-1;j<2;j++){
+				if(i!=0 && j!=0)
+					checkAround(lastMove,new Point(lastMove.x+i,lastMove.y+j),reversiBoard.getPiece(lastMove.x,lastMove.y));
+			}
+		}
+		
+	}
+	
+	public boolean checkAround(Point lastMove,Point checkPoint, Color color){
+		if(reversiBoard.getPiece(lastMove.x, lastMove.y)!=reversiBoard.getPiece(checkPoint.x, checkPoint.y) && reversiBoard.getPiece(checkPoint.x, checkPoint.y)!=null){
+			if(checkAround(lastMove,new Point(2*checkPoint.x-lastMove.x,2*checkPoint.y-lastMove.y),color))
+				return reversiBoard.turnPieceOnSquare(checkPoint.x,checkPoint.y);
+			else return false;
+				
+		}
+		else return false;
+		
+	}
+	
 }
