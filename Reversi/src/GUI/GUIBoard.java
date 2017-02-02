@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -39,7 +40,10 @@ public class GUIBoard {
 				window.add(square);
 			}
 		}
-		window.setSize(800, 800);
+		Dimension size = new Dimension(600, 600);
+		window.setSize(size);
+		window.setPreferredSize(size);
+		window.setResizable(false);
 		window.pack();
 		window.setVisible(true);
 	}
