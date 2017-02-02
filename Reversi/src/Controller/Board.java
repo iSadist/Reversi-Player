@@ -1,4 +1,4 @@
-
+package Controller;
 public class Board {
 	
 	public static final int boardSize = 8;
