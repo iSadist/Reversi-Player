@@ -3,21 +3,24 @@ package GUI;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Controller.Board;
+import Controller.Reversi;
 
 public class GUIBoard {
 	
-	public JFrame window;
+	private JFrame window;
 	private int boardSize = 8;
 	private Board board;
 	private GUISquare[][] squares;
 	
-	public GUIBoard(Board board) {
+	public GUIBoard(Board board, Reversi reversi) {
 		this.board = board;
 		squares = new GUISquare[boardSize][boardSize];
 		JFrame.setDefaultLookAndFeelDecorated(true);
@@ -26,13 +29,14 @@ public class GUIBoard {
 		GridLayout squareLayout = new GridLayout(boardSize, boardSize);
 		window.setLayout(squareLayout);
 		
-		for(int i = 1; i <= boardSize; i++) {
-			for(int j = 1; j <= boardSize; j++){
+		for(int i = 0; i < boardSize; i++) {
+			for(int j = 0; j < boardSize; j++){
 				Point point = new Point(i,j);
-				GUISquare square = new GUISquare("Button", point, Color.GRAY);
-				squares[i-1][j-1] = square;
+				GUISquare square = new GUISquare("Button", point, null);
+				ClickEventListener eventListener = new ClickEventListener(square, reversi, this);
+				square.addMouseListener(eventListener);
+				squares[i][j] = square;
 				window.add(square);
-				System.out.println("Button created!");
 			}
 		}
 		window.setSize(800, 800);
@@ -41,12 +45,13 @@ public class GUIBoard {
 	}
 	
 	public void updateUI() {
-		//TODO
-		for(int i = 1; i <= boardSize; i++) {
-			for(int j = 1; j <= boardSize; j++) {
-				squares[i-1][j-1].setBackground(board.getPiece(i-1, j-1));
+		for(int i = 0; i < boardSize; i++) {
+			for(int j = 0; j < boardSize; j++) {
+				squares[i][j].setBackground(board.getPiece(i, j));
+				System.out.println(board.getPiece(i, j));
 			}
 		}
+		System.out.println("Updated!");
 		
 	}
 }

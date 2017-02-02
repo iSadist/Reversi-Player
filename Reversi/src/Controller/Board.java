@@ -13,20 +13,20 @@ public class Board {
 	}
 	
 	public boolean putPieceOnSquare(int x, int y, Color piece) {
-		if(squareIsOnBoard(x, y)) {
+		if(!squareIsOnBoard(x, y)) {
 			System.out.println("You are trying to put a piece outside of the board");
 			return false;
 		}
-		if(squares[x][y] == null) {
+		if(squareIsTaken(x, y)) {
 			System.out.println("The square is already taken");
 			return false;
 		}
-		squares[x-1][y-1] = piece;
+		squares[x][y] = piece;
 		return true;
 	}
 	
 	public boolean turnPieceOnSquare(int x, int y) {
-		if(squares[x][y] == null) {
+		if(squareIsTaken(x, y)) {
 			return false;
 		} else if(squares[x][y] == Color.BLACK) {
 			setPiece(x, y, Color.WHITE);
@@ -37,28 +37,46 @@ public class Board {
 	}
 	
 	public void setPiece(int x, int y, Color piece) {
-		if(squareIsOnBoard(x, y)) {
+		if(!squareIsOnBoard(x, y)) {
 			return;
 		}
 		squares[x][y] = piece;
 	}
 	
 	public Color getPiece(int x, int y) {
-		if(squareIsOnBoard(x, y)) {
-			return squares[x][y];			
+		if(!squareIsOnBoard(x, y)) {
+			return null;
 		}
-		return null;
+		return squares[x][y];			
 	}
 	
 	private boolean squareIsOnBoard(int x, int y) {
-		return x<1 || x>boardSize || y<1 || y>boardSize;
+		return !(x<0 || x>boardSize-1 || y<0 || y>boardSize-1);
+	}
+	
+	private boolean squareIsTaken(int x, int y) {
+		return squares[x][y] == Color.BLACK || squares[x][y] == Color.WHITE;
 	}
 	
 	private void setup() {
+		for(int x = 0; x < boardSize; x++) {
+			for(int y = 0; y < boardSize; y++) {
+				putPieceOnSquare(x, y, Color.GRAY);
+				System.out.println("X: " + x + "\nY: " + y + "\n");
+			}
+		}
+		putPieceOnSquare(3, 3, Color.BLACK);
+		putPieceOnSquare(3, 4, Color.WHITE);
+		putPieceOnSquare(4, 3, Color.WHITE);
 		putPieceOnSquare(4, 4, Color.BLACK);
-		putPieceOnSquare(4, 5, Color.WHITE);
-		putPieceOnSquare(5, 4, Color.WHITE);
-		putPieceOnSquare(5, 5, Color.BLACK);
+	}
+	
+	public void printBoard() {
+		for(int x = 0; x < boardSize; x++) {
+			for(int y = 0; y < boardSize; y++) {
+				System.out.println(squares[x][y]);
+			}
+		}
 	}
 
 }
