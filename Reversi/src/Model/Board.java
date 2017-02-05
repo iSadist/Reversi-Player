@@ -14,11 +14,9 @@ public class Board {
 	
 	public boolean putPieceOnSquare(int x, int y, Color piece) {
 		if(!squareIsOnBoard(x, y)) {
-			System.out.println("You are trying to put a piece outside of the board");
 			return false;
 		}
 		if(squareIsTaken(x, y)) {
-			System.out.println("The square is already taken");
 			return false;
 		}
 		squares[x][y] = piece;
@@ -26,11 +24,13 @@ public class Board {
 	}
 	
 	public boolean turnPieceOnSquare(int x, int y) {
-		if(squareIsTaken(x, y)) {
+		if(!squareIsTaken(x, y)) {
 			return false;
 		} else if(squares[x][y] == Color.BLACK) {
+			System.out.println("Turn to white");
 			setPiece(x, y, Color.WHITE);
 		} else if(squares[x][y] == Color.WHITE) {
+			System.out.println("Turn to black");
 			setPiece(x, y, Color.BLACK);
 		}
 		return true;
@@ -62,7 +62,6 @@ public class Board {
 		for(int x = 0; x < boardSize; x++) {
 			for(int y = 0; y < boardSize; y++) {
 				putPieceOnSquare(x, y, Color.GRAY);
-				System.out.println("X: " + x + "\nY: " + y + "\n");
 			}
 		}
 		putPieceOnSquare(3, 3, Color.BLACK);
