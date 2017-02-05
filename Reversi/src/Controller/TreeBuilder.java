@@ -25,7 +25,7 @@ public class TreeBuilder {
 		int currentNodeValue;
 		
 		for(Node childNode : root.getChildren()) {
-			currentNodeValue = getMinValue(childNode, 0, depth);
+			currentNodeValue = getMinValue(childNode, 0, depth, highestValue);
 			if(currentNodeValue > highestValue) {
 				highestValue = currentNodeValue;
 				bestNode = childNode;
@@ -35,7 +35,7 @@ public class TreeBuilder {
 	}
 	
 	
-	private int getMinValue(Node root, int currentDepth, int depth) {
+	private int getMinValue(Node root, int currentDepth, int depth, int largestNodeOnCurrentLevel) {
 		if(currentDepth >= depth || root.children() == 0) return root.getValue();
 		
 		int lowestValue = Integer.MAX_VALUE;
@@ -43,6 +43,9 @@ public class TreeBuilder {
 		
 		for(Node childNode : root.getChildren()) {
 			currentNodeValue = getMaxValue(childNode, 0, depth);
+			if(currentNodeValue < largestNodeOnCurrentLevel) {
+				return currentNodeValue;
+			}
 			if(currentNodeValue < lowestValue) {
 				lowestValue = currentNodeValue;
 			}
@@ -57,7 +60,7 @@ public class TreeBuilder {
 		int currentNodeValue;
 		
 		for(Node childNode : root.getChildren()) {
-			currentNodeValue = getMinValue(childNode, 0, depth);
+			currentNodeValue = getMinValue(childNode, 0, depth, highestValue);
 			if(currentNodeValue < highestValue) {
 				highestValue = currentNodeValue;
 			}
