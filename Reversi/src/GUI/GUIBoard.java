@@ -32,11 +32,11 @@ public class GUIBoard {
 		
 		for(int i = 0; i < boardSize; i++) {
 			for(int j = 0; j < boardSize; j++){
-				Point point = new Point(i,j);
+				Point point = new Point(j,i);
 				GUISquare square = new GUISquare("Button", point, null);
 				ClickEventListener eventListener = new ClickEventListener(square, reversi, this);
 				square.addMouseListener(eventListener);
-				squares[i][j] = square;
+				squares[j][i] = square;
 				window.add(square);
 			}
 		}
@@ -51,8 +51,7 @@ public class GUIBoard {
 	public void updateUI() {
 		for(int i = 0; i < boardSize; i++) {
 			for(int j = 0; j < boardSize; j++) {
-				squares[i][j].setBackground(board.getPiece(i, j));
-				System.out.println(board.getPiece(i, j));
+				squares[j][i].setBackground(board.getPiece(j, i));
 			}
 		}
 		System.out.println("Updated!");
