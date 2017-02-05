@@ -5,6 +5,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import GUI.GUIBoard;
+import Model.Board;
 
 public class Main {
 	

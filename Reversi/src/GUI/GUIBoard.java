@@ -11,8 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import Controller.Board;
 import Controller.Reversi;
+import Model.Board;
 
 public class GUIBoard {
 	
