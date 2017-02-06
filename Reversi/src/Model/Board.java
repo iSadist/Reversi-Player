@@ -27,10 +27,10 @@ public class Board {
 		if(!squareIsTaken(x, y)) {
 			return false;
 		} else if(squares[x][y] == Color.BLACK) {
-			System.out.println("Turn to white");
+//			System.out.println("Turn to white");
 			setPiece(x, y, Color.WHITE);
 		} else if(squares[x][y] == Color.WHITE) {
-			System.out.println("Turn to black");
+//			System.out.println("Turn to black");
 			setPiece(x, y, Color.BLACK);
 		}
 		return true;

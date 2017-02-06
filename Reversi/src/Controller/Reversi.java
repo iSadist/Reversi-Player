@@ -3,40 +3,94 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import javax.management.openmbean.OpenMBeanParameterInfoSupport;
-
 import GUI.GUIBoard;
 import Model.Board;
+import Model.Node;
 
 public class Reversi {
 	
 	private int myScore;
 	private int computerScore;
 	private Board reversiBoard;
-	private GUIBoard gui;
 	private ArrayList<Point> possibleNextMoves;
 	private boolean myTurn;
+	private boolean computerPlaying;
+	private TreeBuilder computer;
 	
-	public Reversi(Board board) {
-		myScore = 0;
-		computerScore = 0;
-		myTurn = true;
+	public Reversi(Board board, boolean computerPlaying) {
 		reversiBoard = board;
+		this.computer = new TreeBuilder(null, this);
+		myScore = 2;
+		computerScore = 2;
+		myTurn = true;
+		this.computerPlaying = computerPlaying;
 		possibleNextMoves = findPossibleMoves(myTurn);
 		System.out.println(possibleNextMoves);
 	}
 	
-	public void flipPieces(Point lastMove) {
-		
+	/**
+	 * Copy constructor
+	 */
+	public Reversi(Reversi copy) {
+		this.myScore = copy.myScore;
+		this.computerScore = copy.computerScore;
+		this.reversiBoard = copy.reversiBoard;
+		this.possibleNextMoves = copy.possibleNextMoves;
+		this.myTurn = copy.myTurn;
+		this.computerPlaying = false;
+	}
+	
+	public int getMyScore() {
+		return myScore;
+	}
+	
+	public int getOpponentsScore() {
+		return computerScore;
+	}
+	
+	public boolean isMyTurn() {
+		return myTurn;
+	}
+	
+	public ArrayList<Point> getPossibleMoves() {
+		return possibleNextMoves;
+	}
+	
+	public void changeScore(int addedPieces, int flips) {
+		if(myTurn) {
+			myScore += addedPieces + flips;
+			computerScore -= flips;
+		} else {
+			computerScore += addedPieces + flips;
+			myScore -= flips;
+		}
 	}
 	
 	public void putPieceOnSquare(Point p, Color color, GUIBoard gui) {
-		if(myTurn && isPossibleMove(p)) {
+		if(isPossibleMove(p)) {
 			if(reversiBoard.putPieceOnSquare(p.x, p.y, color)) {
-				checkFlip(p);
-				gui.updateUI();
-//				switchTurns();
+				changeScore(1, 0);
+				flipPieces(p);
+				if(gui != null) gui.updateUI();
+				switchTurns(gui);
 			}			
+		}
+	}
+	
+	public void flipPieces(Point lastMove) {
+		for(int x = -1; x<=1 ; x++) {
+			for(int y = -1; y<=1 ; y++) {
+				if(x!=0 || y!=0) {
+					Point direction = new Point(x,y);
+					ArrayList<Point> squaresToBeFlipped = existsPossibleLine(lastMove, direction, myTurn);
+					if(squaresToBeFlipped != null) {
+						changeScore(0,squaresToBeFlipped.size());
+						for(Point square : squaresToBeFlipped) {
+							reversiBoard.turnPieceOnSquare(square.x, square.y);
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -74,19 +128,16 @@ public class Reversi {
 		ArrayList<Point> line = new ArrayList<Point>();
 		Point checkSquare = new Point(square.x + direction.x, square.y + direction.y);
 		Color oppositeColor;
-		Color thisColor;
 		if(myTurn) {
 			oppositeColor = Color.WHITE;
-			thisColor = Color.BLACK;
 		} else {
 			oppositeColor = Color.BLACK;
-			thisColor = Color.WHITE;
 		}
 		
 		if(reversiBoard.squareIsOnBoard(checkSquare.x, checkSquare.y) && reversiBoard.getPiece(checkSquare.x, checkSquare.y).equals(oppositeColor)) {
 			while(reversiBoard.squareIsOnBoard(checkSquare.x, checkSquare.y) && !reversiBoard.getPiece(checkSquare.x, checkSquare.y).equals(Color.GRAY)) {
 				if(reversiBoard.getPiece(checkSquare.x, checkSquare.y).equals(oppositeColor)) {
-					line.add(checkSquare);
+					line.add(new Point(checkSquare.x, checkSquare.y));
 				} else {
 					return line;
 				}
@@ -100,14 +151,17 @@ public class Reversi {
 		return possibleNextMoves.contains(move);
 	}
 	
-	private void switchTurns() {
-		possibleNextMoves = findPossibleMoves(myTurn);
-		System.out.println(possibleNextMoves);
+	private void switchTurns(GUIBoard gui) {
 		myTurn = !myTurn;
-		if(!myTurn) {
-			//Make computer start to think
-			System.out.println("Computer moves...");
-			switchTurns();
+		possibleNextMoves = findPossibleMoves(myTurn);
+		if(!myTurn && computerPlaying) {
+			Node rootNode = new Node();
+			computer.buildTreeWithDepth(8, 0, this, rootNode, myScore, computerScore);
+			Node bestNode = computer.depthFirstLimited(8, rootNode);
+			System.out.println(bestNode);
+			Point bestMove = bestNode.getMove();
+			putPieceOnSquare(bestMove, Color.WHITE, gui);
+			
 		}
 	}
 	

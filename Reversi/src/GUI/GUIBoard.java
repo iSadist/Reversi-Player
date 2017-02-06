@@ -1,16 +1,11 @@
 package GUI;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
+import Controller.ClickEventListener;
 import Controller.Reversi;
 import Model.Board;
 

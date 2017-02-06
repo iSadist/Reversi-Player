@@ -1,10 +1,11 @@
-package GUI;
+package Controller;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import Controller.Reversi;
+import GUI.GUIBoard;
+import GUI.GUISquare;
 
 public class ClickEventListener implements MouseListener {
 	
@@ -20,7 +21,9 @@ public class ClickEventListener implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		game.putPieceOnSquare(square.getPoint(), Color.BLACK, board);
+		if(game.isMyTurn()) {
+			game.putPieceOnSquare(square.getPoint(), Color.BLACK, board);			
+		}
 	}
 
 	@Override

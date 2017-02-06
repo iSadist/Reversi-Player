@@ -4,17 +4,12 @@ import java.util.ArrayList;
 
 public class Node {
 	
-	private int myValue;
-	private int opponentsScore;
 	private int value;
-	private boolean valueIsSet;
-	private boolean myTurn;
 	private Point nextMove;
 	private ArrayList<Node> branches;
 	
-	public Node(int myScore, int computerScore) {
-		value = 0;
-		valueIsSet = false;
+	public Node() {
+		value = Integer.MIN_VALUE;
 		branches = new ArrayList<Node>();
 	}
 	
@@ -40,15 +35,14 @@ public class Node {
 	
 	public void setValue(int value) {
 		this.value = value;
-		valueIsSet = true;
-	}
-	
-	public boolean hasValue() {
-		return valueIsSet;
 	}
 	
 	public Point getMove() {
 		return nextMove;
+	}
+	
+	public void setMove(Point move) {
+		nextMove = move;
 	}
 	
 }
