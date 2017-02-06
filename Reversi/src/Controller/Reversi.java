@@ -33,9 +33,9 @@ public class Reversi {
 	public void putPieceOnSquare(Point p, Color color, GUIBoard gui) {
 		if(myTurn && isPossibleMove(p)) {
 			if(reversiBoard.putPieceOnSquare(p.x, p.y, color)) {
-				flipPieces(p);
+				checkFlip(p);
 				gui.updateUI();
-				switchTurns();
+//				switchTurns();
 			}			
 		}
 	}
@@ -111,28 +111,31 @@ public class Reversi {
 		}
 	}
 	
-	public void checkFlip(Point lastMove) {
-		int x = lastMove.x;
-		int y = lastMove.y;
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				if (i != 0 && j != 0 && x + i < 9 && y + j < 9) {
-					checkAround(lastMove, new Point(x + i, y + j));
+	private void checkFlip(Point lastMove) {
+		int xO = lastMove.x;
+		int yO = lastMove.y;
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				int x = xO + i-1;
+				int y = yO + j-1;
+				if ((i-1 != 0 || j-1 != 0)) {
+					checkAround(lastMove, new Point(x, y),reversiBoard.getPiece(xO,yO));
 				}
 			}
 		}
 	}
 	
-	public boolean checkAround(Point lastMove,Point checkPoint) {
+	private boolean checkAround(Point lastMove,Point checkPoint, Color moveColor) {
 		if(checkPoint.x<9 && checkPoint.y<9) {
-			if(reversiBoard.getPiece(lastMove.x, lastMove.y)!=reversiBoard.getPiece(checkPoint.x, checkPoint.y)
+			if(moveColor!=reversiBoard.getPiece(checkPoint.x, checkPoint.y)
 					&& reversiBoard.getPiece(checkPoint.x, checkPoint.y) != Color.GRAY) {
-				if(checkAround(lastMove,new Point(2*checkPoint.x-lastMove.x,2*checkPoint.y-lastMove.y))) {
+				if(checkAround(lastMove,new Point(checkPoint.x+(int)Math.signum(checkPoint.x-lastMove.x),
+						checkPoint.y+(int)Math.signum(checkPoint.y-lastMove.y)),moveColor)) {
 					return reversiBoard.turnPieceOnSquare(checkPoint.x,checkPoint.y);					
 				}
 				else return false;
 			}
-			else if(reversiBoard.getPiece(lastMove.x, lastMove.y)==reversiBoard.getPiece(checkPoint.x, checkPoint.y)) {
+			else if(moveColor==reversiBoard.getPiece(checkPoint.x, checkPoint.y)) {
 				return true;
 			}
 			else return false;
