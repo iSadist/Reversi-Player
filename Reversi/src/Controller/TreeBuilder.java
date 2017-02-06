@@ -1,8 +1,11 @@
 package Controller;
 
+import Model.Node;
+
 public class TreeBuilder {
 	
 	private Node root;
+	private Reversi virtualGame;
 	
 	public TreeBuilder(Node root) {
 		this.root = root;
@@ -34,6 +37,7 @@ public class TreeBuilder {
 		return bestNode;
 	}
 	
+	//Private methods
 	
 	private int getMinValue(Node root, int currentDepth, int depth, int largestNodeOnCurrentLevel) {
 		if(currentDepth >= depth || root.children() == 0) return root.getValue();

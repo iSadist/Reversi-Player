@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public class Board {
 	
-	public static final int boardSize = 8;
+	public final int boardSize = 8;
 	private Color[][] squares;
 	
 	public Board() {
@@ -50,11 +50,11 @@ public class Board {
 		return squares[x][y];			
 	}
 	
-	private boolean squareIsOnBoard(int x, int y) {
+	public boolean squareIsOnBoard(int x, int y) {
 		return !(x<0 || x>boardSize-1 || y<0 || y>boardSize-1);
 	}
 	
-	private boolean squareIsTaken(int x, int y) {
+	public boolean squareIsTaken(int x, int y) {
 		return squares[x][y] == Color.BLACK || squares[x][y] == Color.WHITE;
 	}
 	
