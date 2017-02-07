@@ -25,7 +25,6 @@ public class Reversi {
 		myTurn = true;
 		this.computerPlaying = computerPlaying;
 		possibleNextMoves = findPossibleMoves(myTurn);
-		System.out.println(possibleNextMoves);
 	}
 	
 	/**
@@ -34,7 +33,7 @@ public class Reversi {
 	public Reversi(Reversi copy) {
 		this.myScore = copy.myScore;
 		this.computerScore = copy.computerScore;
-		this.reversiBoard = copy.reversiBoard;
+		this.reversiBoard = new Board(copy.reversiBoard);
 		this.possibleNextMoves = copy.possibleNextMoves;
 		this.myTurn = copy.myTurn;
 		this.computerPlaying = false;
@@ -56,6 +55,10 @@ public class Reversi {
 		return possibleNextMoves;
 	}
 	
+	public Color getColorOnSquare(int x, int y) {
+		return reversiBoard.getPiece(x, y);
+	}
+	
 	public void changeScore(int addedPieces, int flips) {
 		if(myTurn) {
 			myScore += addedPieces + flips;
@@ -71,7 +74,9 @@ public class Reversi {
 			if(reversiBoard.putPieceOnSquare(p.x, p.y, color)) {
 				changeScore(1, 0);
 				flipPieces(p);
-				if(gui != null) gui.updateUI();
+				if(gui != null)  {
+					gui.updateUI();
+				}
 				switchTurns(gui);
 			}			
 		}
@@ -155,13 +160,14 @@ public class Reversi {
 		myTurn = !myTurn;
 		possibleNextMoves = findPossibleMoves(myTurn);
 		if(!myTurn && computerPlaying) {
+			System.out.println("Computer moving...");
 			Node rootNode = new Node();
-			computer.buildTreeWithDepth(8, 0, this, rootNode, myScore, computerScore);
-			Node bestNode = computer.depthFirstLimited(8, rootNode);
-			System.out.println(bestNode);
+			computer.buildTreeWithDepth(6, 0, this, rootNode, myScore, computerScore);
+			Node bestNode = computer.depthFirstLimited(6, rootNode);
 			Point bestMove = bestNode.getMove();
 			putPieceOnSquare(bestMove, Color.WHITE, gui);
-			
+			System.out.println("Computer done!");
+			System.out.println("My score: " + myScore + " Computer score: " + computerScore);
 		}
 	}
 	

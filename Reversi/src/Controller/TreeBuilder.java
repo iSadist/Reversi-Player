@@ -7,15 +7,15 @@ import Model.Node;
 
 public class TreeBuilder {
 	
-	private Node root;
-	
 	public TreeBuilder(Node root, Reversi game) {
-		this.root = root;
+		
 	}
 	
 	public void buildTreeWithDepth(int depth, int currentDepth, Reversi game, Node gameNode, int myStartScore, int opponentStartScore) {
-		if(game.getPossibleMoves().isEmpty() || depth == currentDepth) {
-			int value = (game.getMyScore() - game.getOpponentsScore()) - (myStartScore - opponentStartScore) ;
+		Reversi virtualGame = new Reversi(game);
+		
+		if(virtualGame.getPossibleMoves().isEmpty() || depth == currentDepth) {
+			int value = (virtualGame.getMyScore() - virtualGame.getOpponentsScore()) - (myStartScore - opponentStartScore) ;
 			gameNode.setValue(value);
 			return;
 		}
@@ -41,13 +41,12 @@ public class TreeBuilder {
 		
 		for(Node childNode : root.getChildren()) {
 			currentNodeValue = getMinValue(childNode, 0, depth, highestValue);
-			System.out.println(currentNodeValue);
 			if(currentNodeValue > highestValue) {
-				System.out.println("Found a better node!");
 				highestValue = currentNodeValue;
 				bestNode = childNode;
 			}
 		}
+		System.out.println(highestValue);
 		return bestNode;
 	}
 	
@@ -79,7 +78,7 @@ public class TreeBuilder {
 		
 		for(Node childNode : root.getChildren()) {
 			currentNodeValue = getMinValue(childNode, currentDepth+1, depth, highestValue);
-			if(currentNodeValue < highestValue) {
+			if(currentNodeValue > highestValue) {
 				highestValue = currentNodeValue;
 			}
 		}

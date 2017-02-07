@@ -12,6 +12,15 @@ public class Board {
 		setup();
 	}
 	
+	public Board(Board copy) {
+		squares = new Color[boardSize][boardSize];
+		for(int x = 0; x<boardSize ; x++) {
+			for(int y = 0; y<boardSize;y++) {
+				this.squares[x][y] = copy.squares[x][y];
+			}
+		}
+	}
+	
 	public boolean putPieceOnSquare(int x, int y, Color piece) {
 		if(!squareIsOnBoard(x, y)) {
 			return false;
@@ -27,10 +36,8 @@ public class Board {
 		if(!squareIsTaken(x, y)) {
 			return false;
 		} else if(squares[x][y] == Color.BLACK) {
-//			System.out.println("Turn to white");
 			setPiece(x, y, Color.WHITE);
 		} else if(squares[x][y] == Color.WHITE) {
-//			System.out.println("Turn to black");
 			setPiece(x, y, Color.BLACK);
 		}
 		return true;
