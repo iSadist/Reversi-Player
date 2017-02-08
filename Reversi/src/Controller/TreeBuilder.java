@@ -7,15 +7,18 @@ import Model.Node;
 
 public class TreeBuilder {
 	
+	private final long thinkTime = 3000; 
+	
 	public TreeBuilder(Node root, Reversi game) {
 		
 	}
 	
-	public void buildTreeWithDepth(int depth, int currentDepth, Reversi game, Node gameNode, int myStartScore, int opponentStartScore) {
+	public void buildTreeWithDepth(int depth, int currentDepth, Reversi game, Node gameNode, int myStartScore, int opponentStartScore, long startTime) {
 		Reversi virtualGame = new Reversi(game);
 		
-		if(virtualGame.getPossibleMoves().isEmpty() || depth == currentDepth) {
-			int value = (virtualGame.getMyScore() - virtualGame.getOpponentsScore()) - (myStartScore - opponentStartScore) ;
+		//Exit the loop if the any of these are true
+		if(virtualGame.getPossibleMoves().isEmpty() || depth == currentDepth || System.currentTimeMillis() > startTime+thinkTime) {
+			int value = (virtualGame.getMyScore()) - (myStartScore);
 			gameNode.setValue(value);
 			return;
 		}
@@ -27,7 +30,7 @@ public class TreeBuilder {
 			nodeBranch.setMove(move);
 			gameBranch.putPieceOnSquare(move, pieceColor, null);
 			gameNode.addNode(nodeBranch);
-			buildTreeWithDepth(depth, currentDepth+1, gameBranch, nodeBranch, myStartScore, opponentStartScore);
+			buildTreeWithDepth(depth, currentDepth+1, gameBranch, nodeBranch, myStartScore, opponentStartScore, startTime);
 		}
 	}
 	
@@ -46,12 +49,21 @@ public class TreeBuilder {
 				bestNode = childNode;
 			}
 		}
-		System.out.println(highestValue);
 		return bestNode;
 	}
 	
 	//Private methods
 	
+	
+	/**
+	 * Recursive method that returns the lowest value of the nodes among its children.
+	 * Also implements alpha beta method.
+	 * @param root
+	 * @param currentDepth
+	 * @param depth
+	 * @param largestNodeOnCurrentLevel
+	 * @return
+	 */
 	private int getMinValue(Node root, int currentDepth, int depth, int largestNodeOnCurrentLevel) {
 		if(currentDepth >= depth || root.children() == 0) return root.getValue();
 		
@@ -70,6 +82,13 @@ public class TreeBuilder {
 		return lowestValue;
 	}
 	
+	/**
+	 * Recursive method that returns the highest value of the nodes among its children
+	 * @param root
+	 * @param currentDepth
+	 * @param depth
+	 * @return
+	 */
 	private int getMaxValue(Node root, int currentDepth, int depth) {
 		if(currentDepth >= depth || root.children() == 0) return root.getValue();
 		

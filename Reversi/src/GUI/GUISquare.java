@@ -18,7 +18,7 @@ public class GUISquare extends JLabel {
 	public GUISquare(String label, Point pos, Color color) {
 		super();
 		position = pos;
-		Border border = BorderFactory.createLineBorder(Color.BLACK);
+		Border border = BorderFactory.createLineBorder(Color.BLUE);
 		this.setBorder(border);
 		this.setBackground(color);
 		this.setForeground(Color.BLUE);

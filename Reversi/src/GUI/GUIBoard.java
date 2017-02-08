@@ -43,13 +43,14 @@ public class GUIBoard {
 		window.setVisible(true);
 	}
 	
-	public void updateUI() {
+	public Void[] updateUI() {
 		for(int i = 0; i < boardSize; i++) {
 			for(int j = 0; j < boardSize; j++) {
 				squares[j][i].setBackground(board.getPiece(j, i));
 			}
 		}
 		System.out.println("Updated!");
+		return null;
 		
 	}
 }
