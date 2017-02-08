@@ -170,37 +170,5 @@ public class Reversi {
 			System.out.println("My score: " + myScore + " Computer score: " + computerScore);
 		}
 	}
-	
-	private void checkFlip(Point lastMove) {
-		int xO = lastMove.x;
-		int yO = lastMove.y;
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				int x = xO + i-1;
-				int y = yO + j-1;
-				if ((i-1 != 0 || j-1 != 0)) {
-					checkAround(lastMove, new Point(x, y),reversiBoard.getPiece(xO,yO));
-				}
-			}
-		}
-	}
-	
-	private boolean checkAround(Point lastMove,Point checkPoint, Color moveColor) {
-		if(checkPoint.x<9 && checkPoint.y<9) {
-			if(moveColor!=reversiBoard.getPiece(checkPoint.x, checkPoint.y)
-					&& reversiBoard.getPiece(checkPoint.x, checkPoint.y) != Color.GRAY) {
-				if(checkAround(lastMove,new Point(checkPoint.x+(int)Math.signum(checkPoint.x-lastMove.x),
-						checkPoint.y+(int)Math.signum(checkPoint.y-lastMove.y)),moveColor)) {
-					return reversiBoard.turnPieceOnSquare(checkPoint.x,checkPoint.y);					
-				}
-				else return false;
-			}
-			else if(moveColor==reversiBoard.getPiece(checkPoint.x, checkPoint.y)) {
-				return true;
-			}
-			else return false;
-		}
-		else return false;
-	}
-	
+
 }
